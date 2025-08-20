@@ -1,0 +1,35 @@
+---
+- name: Manage users and groups, and install figlet
+  hosts: planetexpress 
+  become: true 
+
+  vars_files:
+    - /home/student/mycode/vars/wed_challenge_names.yml 
+
+  tasks:
+    - name: Create users and groups
+      ansible.builtin.group:
+        name: "{{ item.name }}"
+        state: present
+      loop: "{{ wednesday }}" 
+    - name: Create users from wed_challenge_names.yml
+      ansible.builtin.user: 
+        name: "{{ item.name }}"
+        state: present
+      loop: "{{ wednesday }}"
+
+    - name: Create groups from wed_challenge_names.yml
+      ansible.builtin.group: 
+        name: "{{ item.name }}"
+        state: present
+      loop: "{{ wednesday }}"
+
+
+    - name: Install figlet on all machines
+      package: 
+        name: figlet
+        state: present 
+      when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' 
+    - name: Show completion message
+      ansible.builtin.debug:
+        msg: "I've completed the challenge!"

@@ -1,0 +1,5 @@
+---
+  wednesday:
+    - { name: dan }
+    - { name: chris }
+    - { name: paul }
